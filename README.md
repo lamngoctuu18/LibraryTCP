@@ -39,7 +39,7 @@ Dưới đây là sơ đồ kiến trúc tổng quan của hệ thống quản l
 
 ```mermaid
 graph TD
-    A[Client (Swing UI)] -->|TCP Socket| B[Server]
+    A[Client (Swing UI)] -->|"TCP Socket"| B[Server]
     B --> C[ClientHandler]
     C --> D[Enhanced DAO Layer]
     D --> E[SQLite Database]
