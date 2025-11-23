@@ -127,19 +127,29 @@ public class ClientHandler implements Runnable {
     }
 
     private void handleLogin(String[] parts) {
-        if (parts.length < 3) { out.println("LOGIN_FAIL|Missing params"); return; }
+        if (parts.length < 3) { 
+            out.println(ResponseFormatter.error("LOGIN", "Missing username or password"));
+            return; 
+        }
         String username = InputValidator.sanitizeInput(parts[1]);
         String password = parts[2]; // Don't sanitize password
         
         if (!InputValidator.isValidUsername(username)) {
-            out.println("LOGIN_FAIL|Invalid username format");
+            out.println(ResponseFormatter.error("LOGIN", "Invalid username format"));
             return;
         }
 
         // Hard-coded admin for backward compatibility
         if ("admin".equals(username) && "admin".equals(password)) {
             session.authenticate(username, "admin");
-            out.println("LOGIN_SUCCESS|1|admin");
+            
+            java.util.Map<String, Object> userData = new java.util.HashMap<>();
+            userData.put("id", 1);
+            userData.put("username", "admin");
+            userData.put("role", "admin");
+            userData.put("sessionId", clientIdentifier);
+            
+            out.println(ResponseFormatter.success("LOGIN", userData));
             System.out.println("[INFO] Admin login successful from: " + clientIdentifier);
             return;
         }
@@ -160,7 +170,7 @@ public class ClientHandler implements Runnable {
             if (rs.next()) {
                 String dbPassword = rs.getString("password");
                 if (!PasswordUtil.verifyPassword(password, dbPassword)) {
-                    out.println("LOGIN_FAIL|Invalid credentials");
+                    out.println(ResponseFormatter.error("LOGIN", "Invalid credentials"));
                     System.err.println("[SECURITY] Failed login attempt for user: " + username + " from: " + clientIdentifier);
                     return;
                 }
@@ -170,20 +180,27 @@ public class ClientHandler implements Runnable {
                 String status = rs.getString("status");
 
                 if ("locked".equals(status)) {
-                    out.println("LOGIN_FAIL|ACCOUNT_LOCKED|Tài khoản của bạn đã bị khóa, vui lòng đến thư viện hoặc liên hệ số 1900 2004 để biết chi tiết");
+                    out.println(ResponseFormatter.error("LOGIN", "Tài khoản của bạn đã bị khóa, vui lòng đến thư viện hoặc liên hệ số 1900 2004 để biết chi tiết"));
                     System.err.println("[SECURITY] Locked account login attempt: " + username + " from: " + clientIdentifier);
                     return;
                 }
 
                 session.authenticate(username, role);
-                out.println("LOGIN_SUCCESS|" + id + "|" + role);
+                
+                java.util.Map<String, Object> userData = new java.util.HashMap<>();
+                userData.put("id", id);
+                userData.put("username", username);
+                userData.put("role", role);
+                userData.put("sessionId", clientIdentifier);
+                
+                out.println(ResponseFormatter.success("LOGIN", userData));
                 System.out.println("[INFO] User login successful: " + username + " (" + role + ") from: " + clientIdentifier);
             } else {
-                out.println("LOGIN_FAIL|Invalid credentials");
+                out.println(ResponseFormatter.error("LOGIN", "Invalid credentials"));
                 System.err.println("[SECURITY] Failed login attempt for unknown user: " + username + " from: " + clientIdentifier);
             }
         } catch (Exception e) {
-            out.println("LOGIN_FAIL|" + e.getMessage());
+            out.println(ResponseFormatter.error("LOGIN", e.getMessage()));
             System.err.println("[ERROR] Login error for user " + username + ": " + e.getMessage());
         }
     }
@@ -694,7 +711,7 @@ public class ClientHandler implements Runnable {
         } else if (parts.length > 1 && "LIST".equals(parts[1].toUpperCase())) {
             // List available backups
             String[] backups = BackupManager.listBackups();
-            out.println(ResponseFormatter.success("BACKUP_LIST", ResponseFormatter.formatList(backups)));
+            out.println(ResponseFormatter.success("BACKUP_LIST", ResponseFormatter.formatArray(backups)));
         } else {
             // Perform backup
             boolean success = BackupManager.performBackup();

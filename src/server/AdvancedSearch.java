@@ -113,7 +113,7 @@ public class AdvancedSearch {
             }
             
             MetricsCollector.recordDatabaseOperation(true);
-            return ResponseFormatter.success("SEARCH", ResponseFormatter.formatList(books.toArray(new String[0])));
+            return ResponseFormatter.success("SEARCH", ResponseFormatter.formatArray(books.toArray(new String[0])));
             
         } catch (Exception e) {
             System.err.println("[ERROR] Advanced search failed: " + e.getMessage());
@@ -176,7 +176,7 @@ public class AdvancedSearch {
             }
             
             MetricsCollector.recordDatabaseOperation(true);
-            return ResponseFormatter.success("USER_SEARCH", ResponseFormatter.formatList(users.toArray(new String[0])));
+            return ResponseFormatter.success("USER_SEARCH", ResponseFormatter.formatArray(users.toArray(new String[0])));
             
         } catch (Exception e) {
             System.err.println("[ERROR] User search failed: " + e.getMessage());
@@ -216,7 +216,7 @@ public class AdvancedSearch {
             }
             
             MetricsCollector.recordDatabaseOperation(true);
-            return ResponseFormatter.success("POPULAR_BOOKS", ResponseFormatter.formatList(books.toArray(new String[0])));
+            return ResponseFormatter.success("POPULAR_BOOKS", ResponseFormatter.formatArray(books.toArray(new String[0])));
             
         } catch (Exception e) {
             System.err.println("[ERROR] Popular books search failed: " + e.getMessage());
@@ -252,7 +252,7 @@ public class AdvancedSearch {
             }
             
             MetricsCollector.recordDatabaseOperation(true);
-            return ResponseFormatter.success("RECENT_BOOKS", ResponseFormatter.formatList(books.toArray(new String[0])));
+            return ResponseFormatter.success("RECENT_BOOKS", ResponseFormatter.formatArray(books.toArray(new String[0])));
             
         } catch (Exception e) {
             System.err.println("[ERROR] Recent books search failed: " + e.getMessage());
@@ -299,7 +299,7 @@ public class AdvancedSearch {
             }
             
             MetricsCollector.recordDatabaseOperation(true);
-            return ResponseFormatter.success("RECOMMENDATIONS", ResponseFormatter.formatList(books.toArray(new String[0])));
+            return ResponseFormatter.success("RECOMMENDATIONS", ResponseFormatter.formatArray(books.toArray(new String[0])));
             
         } catch (Exception e) {
             System.err.println("[ERROR] Recommendations search failed: " + e.getMessage());

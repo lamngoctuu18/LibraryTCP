@@ -2,9 +2,11 @@ package server;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 /**
- * Utility for creating standardized JSON-like responses
+ * Utility for creating standardized JSON responses
  */
 public class ResponseFormatter {
     
@@ -12,81 +14,87 @@ public class ResponseFormatter {
      * Create success response with data
      */
     public static String success(String action, Object data) {
-        return formatResponse("SUCCESS", action, null, data);
+        return createJsonResponse("success", action, null, data);
     }
     
     /**
      * Create success response without data
      */
     public static String success(String action) {
-        return formatResponse("SUCCESS", action, null, null);
+        return createJsonResponse("success", action, null, null);
     }
     
     /**
      * Create error response
      */
     public static String error(String action, String message) {
-        return formatResponse("ERROR", action, message, null);
+        return createJsonResponse("error", action, message, null);
     }
     
     /**
      * Create error response with details
      */
     public static String error(String action, String message, Object details) {
-        return formatResponse("ERROR", action, message, details);
+        return createJsonResponse("error", action, message, details);
     }
     
     /**
      * Create fail response (for business logic failures)
      */
     public static String fail(String action, String reason) {
-        return formatResponse("FAIL", action, reason, null);
+        return createJsonResponse("fail", action, reason, null);
     }
     
     /**
-     * Format response in structured format
+     * Create JSON response
      */
-    private static String formatResponse(String status, String action, String message, Object data) {
-        StringBuilder response = new StringBuilder();
-        response.append(status).append("|").append(action);
+    private static String createJsonResponse(String status, String action, String message, Object data) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", status);
+        response.put("action", action);
+        response.put("timestamp", System.currentTimeMillis());
         
         if (message != null && !message.trim().isEmpty()) {
-            response.append("|").append(message);
+            response.put("message", message);
         }
         
         if (data != null) {
-            response.append("|").append(data.toString());
+            response.put("data", data);
         }
         
-        return response.toString();
+        return JsonParser.toJson(response);
     }
     
     /**
-     * Format list data for transmission
+     * Format list data as JSON array
      */
-    public static String formatList(String[] items) {
-        if (items == null || items.length == 0) return "";
-        return String.join(";", items);
+    public static String formatList(List<?> items) {
+        if (items == null || items.isEmpty()) return "[]";
+        return JsonParser.toJson(items);
     }
     
     /**
-     * Format object data as key-value pairs
+     * Format array data as JSON array
+     */
+    public static String formatArray(Object[] items) {
+        if (items == null || items.length == 0) return "[]";
+        List<Object> list = new ArrayList<>();
+        for (Object item : items) {
+            list.add(item);
+        }
+        return JsonParser.toJson(list);
+    }
+    
+    /**
+     * Format object data as JSON
      */
     public static String formatObject(Map<String, Object> data) {
-        if (data == null || data.isEmpty()) return "";
-        
-        StringBuilder sb = new StringBuilder();
-        boolean first = true;
-        for (Map.Entry<String, Object> entry : data.entrySet()) {
-            if (!first) sb.append(",");
-            sb.append(entry.getKey()).append("=").append(entry.getValue());
-            first = false;
-        }
-        return sb.toString();
+        if (data == null || data.isEmpty()) return "{}";
+        return JsonParser.toJson(data);
     }
     
     /**
-     * Create standardized book data format
+     * Create standardized book data as JSON
      */
     public static String formatBook(int id, String title, String author, String publisher, int year, int quantity) {
         Map<String, Object> bookData = new HashMap<>();
@@ -96,11 +104,11 @@ public class ResponseFormatter {
         bookData.put("publisher", publisher);
         bookData.put("year", year);
         bookData.put("quantity", quantity);
-        return formatObject(bookData);
+        return JsonParser.toJson(bookData);
     }
     
     /**
-     * Create standardized user data format  
+     * Create standardized user data as JSON  
      */
     public static String formatUser(int id, String username, String role, String email, String phone) {
         Map<String, Object> userData = new HashMap<>();
@@ -109,11 +117,11 @@ public class ResponseFormatter {
         userData.put("role", role);
         userData.put("email", email);
         userData.put("phone", phone);
-        return formatObject(userData);
+        return JsonParser.toJson(userData);
     }
     
     /**
-     * Create standardized borrow data format
+     * Create standardized borrow data as JSON
      */
     public static String formatBorrow(int userId, int bookId, String borrowDate, String dueDate, String status) {
         Map<String, Object> borrowData = new HashMap<>();
@@ -122,6 +130,20 @@ public class ResponseFormatter {
         borrowData.put("borrowDate", borrowDate);
         borrowData.put("dueDate", dueDate);
         borrowData.put("status", status);
-        return formatObject(borrowData);
+        return JsonParser.toJson(borrowData);
+    }
+    
+    /**
+     * Parse JSON response from server
+     */
+    public static Map<String, Object> parseResponse(String jsonResponse) {
+        try {
+            return JsonParser.parseJson(jsonResponse);
+        } catch (Exception e) {
+            Map<String, Object> errorMap = new HashMap<>();
+            errorMap.put("status", "error");
+            errorMap.put("message", "Failed to parse response");
+            return errorMap;
+        }
     }
 }
