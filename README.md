@@ -39,17 +39,17 @@ Dưới đây là sơ đồ kiến trúc tổng quan của hệ thống quản l
 
 ```mermaid
 graph TD
-    A[👤 Client (Swing UI)] -->|🔗 TCP Socket| B[🖥️ Server]
-    B --> C[🔧 ClientHandler]
-    C --> D[🗄️ Enhanced DAO Layer]
-    D --> E[💾 SQLite Database]
-    B --> F[🔐 Session Manager]
-    B --> G[⚡ Rate Limiter]
-    B --> H[🌐 REST API Handler]
-    H --> I[📄 JSON Parser]
-    B --> J[🤖 Recommendation Engine]
-    B --> K[☁️ Cloud Integration]
-    B --> L[📊 Metrics Collector]
+    A[Client (Swing UI)] -->|TCP Socket| B[Server]
+    B --> C[ClientHandler]
+    C --> D[Enhanced DAO Layer]
+    D --> E[SQLite Database]
+    B --> F[Session Manager]
+    B --> G[Rate Limiter]
+    B --> H[REST API Handler]
+    H --> I[JSON Parser]
+    B --> J[Recommendation Engine]
+    B --> K[Cloud Integration]
+    B --> L[Metrics Collector]
     
     style A fill:#e1f5fe
     style B fill:#f3e5f5
