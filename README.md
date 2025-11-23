@@ -33,6 +33,52 @@ Hệ thống quản lý sách - thư viện qua mạng được xây dựng nh�
 - Hỗ trợ phân quyền (admin, user) để đảm bảo bảo mật và hiệu quả vận hành.
 - Cung cấp giao diện hiện đại, dễ sử dụng, phù hợp với nhiều đối tượng người dùng.
 
+### 📊 **Sơ đồ cấu trúc tổng quan**
+
+Dưới đây là sơ đồ kiến trúc tổng quan của hệ thống quản lý thư viện:
+
+```mermaid
+graph TD
+    A[👤 Client (Swing UI)] -->|🔗 TCP Socket| B[🖥️ Server]
+    B --> C[🔧 ClientHandler]
+    C --> D[🗄️ Enhanced DAO Layer]
+    D --> E[💾 SQLite Database]
+    B --> F[🔐 Session Manager]
+    B --> G[⚡ Rate Limiter]
+    B --> H[🌐 REST API Handler]
+    H --> I[📄 JSON Parser]
+    B --> J[🤖 Recommendation Engine]
+    B --> K[☁️ Cloud Integration]
+    B --> L[📊 Metrics Collector]
+    
+    style A fill:#e1f5fe
+    style B fill:#f3e5f5
+    style C fill:#fff3e0
+    style D fill:#e8f5e8
+    style E fill:#ffebee
+    style F fill:#f3e5f5
+    style G fill:#f3e5f5
+    style H fill:#f3e5f5
+    style I fill:#f3e5f5
+    style J fill:#f3e5f5
+    style K fill:#f3e5f5
+    style L fill:#f3e5f5
+```
+
+**Giải thích sơ đồ:**
+- **Client**: Giao diện người dùng (Swing) cho admin và user.
+- **Server**: Xử lý logic nghiệp vụ, kết nối TCP.
+- **ClientHandler**: Quản lý kết nối từ client.
+- **Enhanced DAO Layer**: Truy cập dữ liệu với các phương thức nâng cao.
+- **SQLite Database**: Cơ sở dữ liệu lưu trữ thông tin.
+- **Session Manager**: Quản lý phiên đăng nhập.
+- **Rate Limiter**: Giới hạn tốc độ yêu cầu để bảo mật.
+- **REST API Handler**: Cung cấp API HTTP.
+- **JSON Parser**: Xử lý dữ liệu JSON.
+- **Recommendation Engine**: Đề xuất sách thông minh.
+- **Cloud Integration**: Tích hợp đám mây.
+- **Metrics Collector**: Thu thập số liệu hiệu suất.
+
 ### 🖥️ **Chức năng của Server**
 - 🗄️ Quản lý dữ liệu người dùng, sách, mượn/trả, hoạt động.
 - 🔗 Xử lý các yêu cầu từ Client: đăng nhập, đăng ký, tìm kiếm, mượn/trả sách, quản lý yêu thích, lịch sử hoạt động.
