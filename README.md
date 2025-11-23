@@ -38,35 +38,46 @@ Hệ thống quản lý sách - thư viện qua mạng được xây dựng nh�
 Dưới đây là sơ đồ kiến trúc tổng quan của hệ thống quản lý thư viện:
 
 ```
-graph TD
-    A[Client (Swing UI)] -->|"TCP Socket"| B[Server]
-
-    B --> C[ClientHandler]
-    C --> D[Enhanced DAO Layer]
-    D --> E[SQLite Database]
-
-    B --> F[Session Manager]
-    B --> G[Rate Limiter]
-    B --> H[REST API Handler]
-    H --> I[JSON Parser]
-
-    B --> J[Recommendation Engine]
-    B --> K[Cloud Integration]
-    B --> L[Metrics Collector]
-
-    style A fill:#e1f5fe
-    style B fill:#f3e5f5
-    style C fill:#fff3e0
-    style D fill:#e8f5e8
-    style E fill:#ffebee
-    style F fill:#f3e5f5
-    style G fill:#f3e5f5
-    style H fill:#f3e5f5
-    style I fill:#f3e5f5
-    style J fill:#f3e5f5
-    style K fill:#f3e5f5
-    style L fill:#f3e5f5
-
+graph LR
+    subgraph "Client Layer"
+        A[User Interface<br/>Swing UI]
+    end
+    
+    subgraph "Server Layer"
+        B[ClientHandler]
+        C[Session Manager]
+        D[Rate Limiter]
+        E[REST API Handler<br/>with JSON Parser]
+        F[Recommendation Engine]
+        G[Cloud Integration]
+        H[Metrics Collector]
+    end
+    
+    subgraph "Data Layer"
+        I[Enhanced DAO Layer]
+        J((SQLite Database))
+    end
+    
+    A -->|"TCP Socket"| B
+    B --> I
+    I --> J
+    C --> B
+    D --> B
+    E --> B
+    F --> B
+    G --> B
+    H --> B
+    
+    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style B fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
+    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style D fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style E fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style F fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style G fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style H fill:#fff3e0,stroke:#f57c00,stroke-width:2px
+    style I fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
+    style J fill:#ffebee,stroke:#c62828,stroke-width:2px
 ```
 
 **Giải thích sơ đồ:**
