@@ -39,10 +39,11 @@ Dưới đây là sơ đồ kiến trúc tổng quan của hệ thống quản l
 
 ```mermaid
 graph LR
+    %% Modern, high-contrast palette for readability
     subgraph "Client Layer"
         A[User Interface<br/>Swing UI]
     end
-    
+
     subgraph "Server Layer"
         B[ClientHandler]
         C[Session Manager]
@@ -52,12 +53,12 @@ graph LR
         G[Cloud Integration]
         H[Metrics Collector]
     end
-    
+
     subgraph "Data Layer"
         I[Enhanced DAO Layer]
         J((SQLite Database))
     end
-    
+
     A -->|"TCP Socket"| B
     B --> I
     I --> J
@@ -67,17 +68,18 @@ graph LR
     F --> B
     G --> B
     H --> B
-    
-    style A fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style B fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px
-    style C fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style D fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style E fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style F fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style G fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style H fill:#fff3e0,stroke:#f57c00,stroke-width:2px
-    style I fill:#e8f5e8,stroke:#2e7d32,stroke-width:2px
-    style J fill:#ffebee,stroke:#c62828,stroke-width:2px
+
+    %% Clear, readable colors: white backgrounds, dark strokes, subtle accents
+    style A fill:#ffffff,stroke:#0b63a7,stroke-width:2px,color:#0b63a7
+    style B fill:#ffffff,stroke:#6b3f00,stroke-width:2px,color:#6b3f00
+    style C fill:#fff9e6,stroke:#f29e1f,stroke-width:2px,color:#7a4b00
+    style D fill:#fff9e6,stroke:#f29e1f,stroke-width:2px,color:#7a4b00
+    style E fill:#fff9e6,stroke:#f29e1f,stroke-width:2px,color:#7a4b00
+    style F fill:#fff9e6,stroke:#f29e1f,stroke-width:2px,color:#7a4b00
+    style G fill:#fff9e6,stroke:#f29e1f,stroke-width:2px,color:#7a4b00
+    style H fill:#fff9e6,stroke:#f29e1f,stroke-width:2px,color:#7a4b00
+    style I fill:#f2fbf0,stroke:#2b7a3a,stroke-width:2px,color:#2b7a3a
+    style J fill:#fff0f0,stroke:#b71c1c,stroke-width:2px,color:#b71c1c
 ```
 
 **Giải thích sơ đồ:**
