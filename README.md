@@ -37,7 +37,7 @@ Hệ thống quản lý sách - thư viện qua mạng được xây dựng nh�
 
 Dưới đây là sơ đồ kiến trúc tổng quan của hệ thống quản lý thư viện:
 
-```
+```mermaid
 graph LR
     subgraph "Client Layer"
         A[User Interface<br/>Swing UI]
